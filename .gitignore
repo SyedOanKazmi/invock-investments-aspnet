@@ -4,6 +4,8 @@ obj/
 
 # Databases (created at runtime)
 *.db
+*.db-shm
+*.db-wal
 
 # Node / Vue
 node_modules/
