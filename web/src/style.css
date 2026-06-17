@@ -70,9 +70,12 @@ button.primary:disabled { opacity: .6; cursor: default; }
 .controls { display: flex; gap: .75rem; align-items: center; }
 
 /* Tables */
+.table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; }
-th, td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--border); }
+.table-wrap table { min-width: 460px; }   /* scrolls inside its card instead of overflowing */
+th, td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
 th { color: var(--muted); font-weight: 600; font-size: .8rem; }
+td select { width: 100%; min-width: 110px; }
 
 /* Auth pages */
 .auth { min-height: 100vh; display: flex; align-items: center; justify-content: center; }

@@ -22,27 +22,28 @@
 
   <div class="chart-card">
     <h3 class="chart-title">User Management</h3>
-    <table>
-      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Change Role</th><th></th></tr></thead>
-      <tbody>
-        <tr v-for="u in users" :key="u.email">
-          <td>{{ u.name }}</td>
-          <td>{{ u.email }}</td>
-          <td><span class="badge" :class="u.role">{{ u.role }}</span></td>
-          <td>
-            <select v-if="u.email !== me" :value="u.role" @change="setRole(u, $event.target.value)">
-              <option value="investor">investor</option>
-              <option value="expert">expert</option>
-              <option value="admin">admin</option>
-            </select>
-            <span v-else class="qa-date">(you)</span>
-          </td>
-          <td>
-            <button v-if="u.email !== me" class="del" @click="removeUser(u.email)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th></th></tr></thead>
+        <tbody>
+          <tr v-for="u in users" :key="u.email">
+            <td>{{ u.name }}</td>
+            <td>{{ u.email }}</td>
+            <td>
+              <select v-if="u.email !== me" :value="u.role" @change="setRole(u, $event.target.value)">
+                <option value="investor">investor</option>
+                <option value="expert">expert</option>
+                <option value="admin">admin</option>
+              </select>
+              <span v-else class="badge admin">you</span>
+            </td>
+            <td>
+              <button v-if="u.email !== me" class="del" @click="removeUser(u.email)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="chart-card">
