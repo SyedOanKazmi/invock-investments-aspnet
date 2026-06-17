@@ -136,6 +136,23 @@ textarea:focus { border-color: var(--accent); }
 .star { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
 .star.on { color: #f59e0b; }
 
+/* ── Navbar: right cluster + mobile hamburger menu ────────────────────────── */
+.nav { position: relative; }
+.nav-right { display: flex; align-items: center; gap: .75rem; margin-left: auto; }
+.name { color: var(--muted); font-size: .85rem; }
+.hamburger { background: none; border: 1px solid var(--border); color: var(--text); font-size: 1.1rem; width: 38px; height: 38px; border-radius: 8px; cursor: pointer; line-height: 1; }
+.mobile-only { display: none; }
+.mobile-menu {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: .5rem;
+  box-shadow: 0 10px 24px rgba(0,0,0,.45); z-index: 150;
+}
+.mobile-menu a { padding: .85rem 1rem; border-radius: 8px; color: var(--text); font-weight: 500; }
+.mobile-menu a:hover, .mobile-menu a.router-link-active { background: var(--surface2); color: var(--accent); }
+.mobile-menu .mobile-user { display: flex; align-items: center; gap: .5rem; padding: .85rem 1rem; border-top: 1px solid var(--border); margin-top: .25rem; }
+.mobile-menu .logout { margin: .5rem 1rem .25rem; }
+
 /* ── Responsive / mobile ──────────────────────────────────────────────────── */
 @media (max-width: 800px) {
   .cards { grid-template-columns: repeat(2, 1fr); }
@@ -144,12 +161,10 @@ textarea:focus { border-color: var(--accent); }
 }
 
 @media (max-width: 560px) {
-  /* Navbar stacks and links scroll sideways instead of overflowing */
-  .nav { flex-wrap: wrap; height: auto; gap: 1rem; padding: .75rem 1rem; }
-  .links { order: 3; width: 100%; overflow-x: auto; gap: .25rem; -webkit-overflow-scrolling: touch; }
-  .links a { white-space: nowrap; }
-  .user { gap: .5rem; }
-  .user .name { display: none; }            /* save space on small screens */
+  /* Hide desktop links/user, show the hamburger which opens .mobile-menu */
+  .desktop-only { display: none !important; }
+  .mobile-only { display: inline-flex; align-items: center; justify-content: center; }
+  .nav { gap: 1rem; padding: 0 1rem; }
 
   .main { padding: 1rem; }
   .page-head { flex-direction: column; align-items: flex-start; gap: .75rem; }

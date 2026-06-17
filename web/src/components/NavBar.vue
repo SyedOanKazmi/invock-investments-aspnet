@@ -1,7 +1,9 @@
 <template>
   <nav class="nav">
     <div class="brand">Invock <span>Investments</span></div>
-    <div class="links">
+
+    <!-- Desktop links -->
+    <div class="links desktop-only">
       <RouterLink to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/predictions">Predictions</RouterLink>
       <RouterLink to="/watchlist">Watchlist</RouterLink>
@@ -9,7 +11,9 @@
       <RouterLink to="/feedback">Feedback</RouterLink>
       <RouterLink v-if="auth.role === 'admin'" to="/admin">Admin</RouterLink>
     </div>
-    <div class="user">
+
+    <div class="nav-right">
+      <!-- Notifications bell (always visible) -->
       <div class="notif" v-click-outside="() => (open = false)">
         <button class="bell" @click="open = !open">
           🔔<span v-if="unread" class="count">{{ unread }}</span>
@@ -29,8 +33,30 @@
           </div>
         </div>
       </div>
-      <span class="badge" :class="auth.user.role">{{ auth.user.role }}</span>
-      <span class="name">{{ auth.user.name }}</span>
+
+      <!-- Desktop user info -->
+      <span class="badge desktop-only" :class="auth.user.role">{{ auth.user.role }}</span>
+      <span class="name desktop-only">{{ auth.user.name }}</span>
+      <button class="logout desktop-only" @click="logout">Logout</button>
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger mobile-only" @click="menuOpen = !menuOpen" aria-label="Menu">
+        {{ menuOpen ? '✕' : '☰' }}
+      </button>
+    </div>
+
+    <!-- Mobile dropdown menu -->
+    <div v-if="menuOpen" class="mobile-menu" @click="menuOpen = false">
+      <RouterLink to="/dashboard">Dashboard</RouterLink>
+      <RouterLink to="/predictions">Predictions</RouterLink>
+      <RouterLink to="/watchlist">Watchlist</RouterLink>
+      <RouterLink to="/qa">Expert Q&amp;A</RouterLink>
+      <RouterLink to="/feedback">Feedback</RouterLink>
+      <RouterLink v-if="auth.role === 'admin'" to="/admin">Admin</RouterLink>
+      <div class="mobile-user">
+        <span class="badge" :class="auth.user.role">{{ auth.user.role }}</span>
+        <span class="name">{{ auth.user.name }}</span>
+      </div>
       <button class="logout" @click="logout">Logout</button>
     </div>
   </nav>
@@ -47,6 +73,7 @@ const router = useRouter()
 const items = ref([])
 const unread = ref(0)
 const open = ref(false)
+const menuOpen = ref(false)
 let timer = null
 
 const ICONS = { announcement: '📢', answer: '💬', feedback: '📝', info: 'ℹ️' }
