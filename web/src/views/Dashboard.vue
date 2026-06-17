@@ -12,14 +12,14 @@
   <div class="cards">
     <div class="card">
       <div class="label">Latest Close</div>
-      <div class="value">PKR {{ summary.latest_close }}</div>
-      <div :class="summary.change >= 0 ? 'green' : 'red'">
+      <div class="value">PKR {{ summary.latest_close ?? '—' }}</div>
+      <div v-if="summary.change != null" :class="summary.change >= 0 ? 'green' : 'red'">
         {{ summary.change >= 0 ? '+' : '' }}{{ summary.change }} ({{ summary.pct_change }}%)
       </div>
     </div>
-    <div class="card"><div class="label">52-Week High</div><div class="value green">PKR {{ summary.high_52w }}</div></div>
-    <div class="card"><div class="label">52-Week Low</div><div class="value red">PKR {{ summary.low_52w }}</div></div>
-    <div class="card"><div class="label">Avg Volume (30d)</div><div class="value">{{ (summary.avg_volume / 1e6).toFixed(2) }}M</div></div>
+    <div class="card"><div class="label">52-Week High</div><div class="value green">PKR {{ summary.high_52w ?? '—' }}</div></div>
+    <div class="card"><div class="label">52-Week Low</div><div class="value red">PKR {{ summary.low_52w ?? '—' }}</div></div>
+    <div class="card"><div class="label">Avg Volume (30d)</div><div class="value">{{ avgVolume }}</div></div>
   </div>
 
   <div class="chart-card">
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Chart from 'chart.js/auto'
 import api from '../api'
 
@@ -38,6 +38,10 @@ const ticker = ref('OGDC')
 const summary = ref({})
 const priceCanvas = ref(null)
 let chart = null
+
+// Show the average in millions, or a dash until data has loaded.
+const avgVolume = computed(() =>
+  summary.value.avg_volume != null ? (summary.value.avg_volume / 1e6).toFixed(2) + 'M' : '—')
 
 async function load() {
   const [sum, hist] = await Promise.all([
