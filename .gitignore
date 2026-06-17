@@ -1,0 +1,21 @@
+# .NET build output
+bin/
+obj/
+
+# Databases (created at runtime)
+*.db
+
+# Node / Vue
+node_modules/
+web/dist/
+web/.vite/
+.vite/
+
+# Python
+__pycache__/
+*.pyc
+
+# Misc
+.env
+.DS_Store
+*.log
