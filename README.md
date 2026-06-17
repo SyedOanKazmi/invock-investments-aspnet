@@ -1,3 +1,13 @@
+---
+title: Invock Investments (ASP.NET)
+emoji: 📈
+colorFrom: green
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Invock Investments (ASP.NET version)
 
 Stock analysis & prediction platform for the Pakistan Stock Exchange.

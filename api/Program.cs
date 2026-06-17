@@ -47,6 +47,8 @@ using (var scope = app.Services.CreateScope())
     Seed.Run(scope.ServiceProvider.GetRequiredService<AppDb>());
 
 app.UseCors();
+app.UseDefaultFiles();   // serve index.html at "/"
+app.UseStaticFiles();    // serve the built Vue site from wwwroot (production)
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -84,10 +86,13 @@ void Notify(AppDb db, string? userEmail, string msg, string type)
 // Run the Python model and return its raw JSON output.
 async Task<string> RunPython(string args)
 {
-    var mlDir = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "..", "ml"));
+    // ML_DIR / PYTHON_BIN are set in the container; locally they default to ../ml + "python".
+    var mlDir = Environment.GetEnvironmentVariable("ML_DIR")
+                ?? Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "..", "ml"));
+    var pythonBin = Environment.GetEnvironmentVariable("PYTHON_BIN") ?? "python";
     var psi = new ProcessStartInfo
     {
-        FileName = "python",
+        FileName = pythonBin,
         Arguments = "predict.py " + args,
         WorkingDirectory = mlDir,
         RedirectStandardOutput = true,
@@ -316,6 +321,9 @@ app.MapPost("/api/admin/users/{email}/role", (string email, RoleReq r, ClaimsPri
     Notify(db, email, $"Your account role is now '{r.Role}'.", "info");
     return Results.Ok(new { message = "updated" });
 }).RequireAuthorization(p => p.RequireRole("admin"));
+
+// SPA fallback: any non-API route returns index.html (frontend uses hash routing).
+app.MapFallbackToFile("index.html");
 
 app.Run();
 

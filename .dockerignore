@@ -1,0 +1,9 @@
+**/bin
+**/obj
+**/node_modules
+web/dist
+**/.vite
+*.db
+*.db-shm
+*.db-wal
+.git

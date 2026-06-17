@@ -12,6 +12,7 @@ node_modules/
 web/dist/
 web/.vite/
 .vite/
+api/wwwroot/
 
 # Python
 __pycache__/
